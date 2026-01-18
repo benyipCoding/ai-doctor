@@ -74,7 +74,9 @@ export default function Home() {
   const [selectedModel, setSelectedModel] = useState("gemini-flash");
 
   // --- 解读风格状态 ---
-  const [explanationStyle, setExplanationStyle] = useState("simple"); // simple | professional
+  const [explanationStyle, setExplanationStyle] = useState<
+    "simple" | "professional"
+  >("simple"); // simple | professional
 
   // --- 首页特性弹窗状态 (新增) ---
   const [activeFeature, setActiveFeature] = useState<HomeFeature | null>(null);
@@ -157,6 +159,7 @@ export default function Home() {
       `;
 
       const payload: RequestPayload = {
+        explanationStyle,
         contents: [
           {
             role: "user",
@@ -203,8 +206,27 @@ export default function Home() {
   };
 
   const test = async () => {
-    const base64Data = (image as string).split(",")[1];
-    const mimeType = (image as string).split(";")[0].split(":")[1];
+    const payload: RequestPayload = {
+      explanationStyle,
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: "Hello, Gemini!" }],
+        },
+      ],
+      generationConfig: {
+        responseMimeType: "application/json",
+      },
+    };
+
+    const res = await fetch("/api/ai_power", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+    console.log("Test API Response:", data);
   };
 
   const resetAnalysis = () => {

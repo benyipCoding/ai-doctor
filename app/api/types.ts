@@ -24,6 +24,7 @@ export interface GenerationConfig {
 }
 
 export interface RequestPayload {
+  explanationStyle: "simple" | "professional";
   contents: Content[];
   generationConfig?: GenerationConfig;
 }
