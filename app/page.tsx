@@ -24,6 +24,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { HomeFeature, features, models } from "@/constant/home";
+import FeatureModal from "./components/FeatureModal";
 
 const apiKey = "";
 
@@ -44,8 +45,6 @@ export default function Home() {
   const [activeFeature, setActiveFeature] = useState<HomeFeature | null>(null);
 
   const currentModelName = models.find((m) => m.id === selectedModel)?.name;
-
-  // --- 首页特性数据 (新增) ---
 
   // 处理图片上传
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,6 +109,14 @@ export default function Home() {
         {/* 2. 预览与分析控制区域 */}
         {/* 3. 分析结果展示区域 */}
       </main>
+
+      {/* 特性详情弹窗 Modal */}
+      {activeFeature && (
+        <FeatureModal
+          feature={activeFeature}
+          onClose={() => setActiveFeature(null)}
+        />
+      )}
     </div>
   );
 }
