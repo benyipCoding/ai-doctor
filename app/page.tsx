@@ -202,6 +202,11 @@ export default function Home() {
     }
   };
 
+  const test = async () => {
+    const base64Data = (image as string).split(",")[1];
+    const mimeType = (image as string).split(";")[0].split(":")[1];
+  };
+
   const resetAnalysis = () => {
     setImage(null);
     setResult(null);
@@ -256,7 +261,7 @@ export default function Home() {
             error={error}
             explanationStyle={explanationStyle as "simple" | "professional"}
             setExplanationStyle={(s) => setExplanationStyle(s)}
-            onAnalyze={analyzeImage}
+            onAnalyze={test}
             loading={loading}
             currentModelName={currentModelName}
           />
