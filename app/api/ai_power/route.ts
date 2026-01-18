@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import apiClient from "@/utils/request";
-import { RequestPayload } from "../types";
+import { AnalyzePayload } from "../types";
 
-export async function POST(data: RequestPayload) {
+export async function POST(request: Request) {
   try {
-    const res = await apiClient.post("/analyzeImage", data);
+    const data: AnalyzePayload = await request.json();
+    const res = await apiClient.post("/analyzeImage", data, {
+      headers: {
+        "Content-Type": request.headers.get("Content-Type"),
+      },
+    });
     const responseData = res.data;
     return NextResponse.json(responseData);
   } catch (error) {

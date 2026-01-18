@@ -1,6 +1,6 @@
 // 封装请求逻辑
 import axios, { AxiosRequestConfig } from "axios";
-import { RequestPayload } from "@/app/api/types";
+import { AnalyzePayload } from "@/app/api/types";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -12,7 +12,7 @@ const apiClient = axios.create({
 
 export const postRequest = async <T>(
   url: string,
-  data: RequestPayload,
+  data: AnalyzePayload,
   config?: AxiosRequestConfig
 ): Promise<T> => {
   const response = await apiClient.post<T>(url, data, config);

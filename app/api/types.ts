@@ -23,7 +23,7 @@ export interface GenerationConfig {
   [key: string]: any;
 }
 
-export interface RequestPayload {
+export interface AnalyzePayload {
   explanationStyle: "simple" | "professional";
   contents: Content[];
   generationConfig?: GenerationConfig;
