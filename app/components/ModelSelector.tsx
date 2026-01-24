@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Sparkles, ChevronDown, Bot, Check } from "lucide-react";
 
 type Model = {
@@ -21,7 +21,10 @@ export default function ModelSelector({
   models,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const currentModelName = models.find((m) => m.id === selectedModel)?.name;
+  const currentModelName = useMemo(
+    () => models.find((m) => m.id === selectedModel)?.name,
+    [models, selectedModel]
+  );
 
   return (
     <div className="relative">
