@@ -215,7 +215,7 @@ export default function Home() {
       explanationStyle,
       mimeType: mimeType,
       data: base64Data,
-      llmKey: "gemini-2.5-flash-preview-09-2025",
+      llmKey: selectedModel,
     };
 
     const res = await fetch("/api/ai_power", {
