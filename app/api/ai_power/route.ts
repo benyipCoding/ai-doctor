@@ -3,8 +3,8 @@ import apiClient from "@/utils/request";
 import { AnalyzePayload } from "../types";
 
 export async function POST(request: Request) {
+  const data: AnalyzePayload = await request.json();
   try {
-    const data: AnalyzePayload = await request.json();
     const res = await apiClient.post("/analyzeImage", data, {
       headers: {
         "Content-Type": request.headers.get("Content-Type"),
@@ -13,6 +13,7 @@ export async function POST(request: Request) {
     const responseData = res.data;
     return NextResponse.json(responseData);
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "Failed to analyze image" },
       { status: 500 }

@@ -217,15 +217,18 @@ export default function Home() {
       data: base64Data,
       llmKey: selectedModel,
     };
+    try {
+      const res = await fetch("/api/ai_power", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    const res = await fetch("/api/ai_power", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-    console.log("Test API Response:", data);
+      const data = await res.json();
+      console.log("Test API Response:", data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getLLMs = async () => {
