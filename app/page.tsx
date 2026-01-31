@@ -2,27 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import ModelSelector from "./components/ModelSelector";
 import UploadArea from "./components/UploadArea";
-import {
-  Upload,
-  FileText,
-  AlertCircle,
-  Activity,
-  HeartPulse,
-  ShieldCheck,
-  X,
-  ChevronDown,
-  ChevronUp,
-  Loader2,
-  Camera,
-  AlertTriangle,
-  Info,
-  Sparkles,
-  Check,
-  Bot,
-  BookOpen,
-  MessageCircle,
-  HelpCircle,
-} from "lucide-react";
+import { Activity } from "lucide-react";
 import { HomeFeature, features } from "@/constant/home";
 import FeatureModal from "./components/FeatureModal";
 import PreviewArea from "./components/PreviewArea";
@@ -31,6 +11,7 @@ import {
   AnalyzeResponse,
   AnalyzeResponseData,
 } from "./api/types";
+import ResultArea from "./components/ResultArea";
 
 const apiKey = "";
 
@@ -110,6 +91,7 @@ export default function Home() {
   };
 
   const analyzeImage = async () => {
+    setLoading(true);
     // 去除 Base64 前缀
     const base64Data = (image as string).split(",")[1];
     const mimeType = (image as string).split(";")[0].split(":")[1];
@@ -140,7 +122,6 @@ export default function Home() {
         return;
       }
       setResult(data);
-      console.log("Test API Response:", data);
     } catch (error) {
       console.log(error);
       setError("分析过程中发生错误，请稍后重试或检查网络。");
@@ -229,6 +210,14 @@ export default function Home() {
         )}
 
         {/* 3. 分析结果展示区域 */}
+        {result && (
+          <ResultArea
+            result={result}
+            explanationStyle={explanationStyle}
+            currentModelName={currentModelName}
+            resetAnalysis={resetAnalysis}
+          />
+        )}
       </main>
 
       {/* 特性详情弹窗 Modal */}
