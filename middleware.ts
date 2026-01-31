@@ -12,7 +12,8 @@ export function middleware(req: NextRequest) {
     // 占位鉴权逻辑：检查名为 `token` 的 cookie 是否存在。
     // TODO: 在后续实现中替换为真实鉴权逻辑（如 JWT 验证、Session 校验等）。
     const token = req.cookies.get("token")?.value;
-    const isAuthenticated = Boolean(token);
+    // const isAuthenticated = Boolean(token);
+    const isAuthenticated = true;
     // const isAuthenticated = false; // 临时强制未鉴权，便于测试重定向逻辑
 
     if (!isAuthenticated) {

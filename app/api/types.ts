@@ -52,6 +52,7 @@ export interface AnalyzeResponseData {
   disclaimer?: string | null;
   // 当图片无法识别或不是化验单时，返回该字段说明错误原因
   error?: string | null;
+  total_token_count?: number | null;
 }
 
 export interface AnalyzeResponse {
