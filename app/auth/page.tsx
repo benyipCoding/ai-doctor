@@ -10,11 +10,14 @@ import {
   Github,
   Chrome,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // login or register
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const router = useRouter();
 
   // 模拟提交
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +25,9 @@ const AuthPage = () => {
     // 实际项目中这里接 Auth API
   };
 
-  const onBack = () => {};
+  const onBack = () => {
+    router.push("/");
+  };
 
   return (
     <div
@@ -54,9 +59,9 @@ const AuthPage = () => {
             <h2 className="text-2xl font-bold text-slate-900 mb-1">
               {isLogin ? "欢迎回来" : "创建新账号"}
             </h2>
-            <p className="text-slate-400 text-sm">
+            {/* <p className="text-slate-400 text-sm">
               {isLogin ? "登录以保存您的健康数据" : "开启您的智能健康管理之旅"}
-            </p>
+            </p> */}
           </div>
 
           {/* 表单区 */}

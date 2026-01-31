@@ -12,6 +12,7 @@ import {
   AnalyzeResponseData,
 } from "./api/types";
 import ResultArea from "./components/ResultArea";
+import { useRouter } from "next/navigation";
 
 const apiKey = "";
 
@@ -56,6 +57,7 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [models, setModels] = useState<any[]>([]); // 可用模型列表
 
+  const router = useRouter();
   // --- 模型选择状态 ---
   const [selectedModel, setSelectedModel] = useState("");
 
@@ -109,6 +111,13 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+
+      if (res.status === 401) {
+        // setError("未授权访问，请先登录。");
+        setLoading(false);
+        router.push("/auth");
+        return;
+      }
 
       const response: AnalyzeResponse = await res.json();
       if (response.error) {
