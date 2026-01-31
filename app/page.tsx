@@ -217,6 +217,8 @@ export default function Home() {
       data: base64Data,
       llmKey: selectedModel,
     };
+    console.log(payload);
+
     try {
       const res = await fetch("/api/ai_power", {
         method: "POST",
@@ -224,7 +226,7 @@ export default function Home() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      const data = await res.json().then((res) => res.data);
       console.log("Test API Response:", data);
     } catch (error) {
       console.log(error);
@@ -235,7 +237,7 @@ export default function Home() {
     const res = await fetch("/api/llms");
     const data = await res.json();
     setModels(data);
-    setSelectedModel(data[0]?.id);
+    setSelectedModel(data[0]?.key);
   };
 
   const resetAnalysis = () => {
@@ -249,7 +251,15 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
+    <div
+      className="min-h-screen bg-slate-50 font-sans text-slate-800"
+      style={{ fontFamily: '"Noto Sans SC", sans-serif' }}
+    >
+      {/* 引入 Google Fonts: Noto Sans SC (思源黑体) - 免费可商用 */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+      `}</style>
+
       {/* 顶部导航 - 适配移动端宽度 */}
       <header className="bg-white shadow-sm sticky top-0 z-20">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">

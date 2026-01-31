@@ -5,10 +5,11 @@ import { AnalyzePayload } from "../types";
 export async function POST(request: Request) {
   const data: AnalyzePayload = await request.json();
   try {
-    const res = await apiClient.post("/analyzeImage", data, {
+    const res = await apiClient.post("/analyze/image", data, {
       headers: {
         "Content-Type": request.headers.get("Content-Type"),
       },
+      timeout: 0,
     });
     const responseData = res.data;
     return NextResponse.json(responseData);

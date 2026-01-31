@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import { Sparkles, ChevronDown, Bot, Check } from "lucide-react";
 
 type Model = {
-  id: string;
+  key: string;
   name: string;
   tag?: string;
   desc?: string;
@@ -22,7 +22,7 @@ export default function ModelSelector({
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const currentModelName = useMemo(
-    () => models.find((m) => m.id === selectedModel)?.name,
+    () => models.find((m) => m.key === selectedModel)?.name,
     [models, selectedModel]
   );
 
@@ -59,20 +59,20 @@ export default function ModelSelector({
             </div>
             {models.map((model) => (
               <button
-                key={model.id}
+                key={model.key}
                 onClick={() => {
-                  onSelectModel(model.id);
+                  onSelectModel(model.key);
                   setIsOpen(false);
                 }}
                 className={`w-full text-left p-3 rounded-lg flex items-start space-x-3 cursor-pointer transition-colors ${
-                  selectedModel === model.id
+                  selectedModel === model.key
                     ? "bg-blue-50 ring-1 ring-blue-100"
                     : "hover:bg-slate-50"
                 }`}
               >
                 <div
                   className={`mt-0.5 p-1.5 rounded-md shrink-0 ${
-                    selectedModel === model.id
+                    selectedModel === model.key
                       ? "bg-blue-100 text-blue-600"
                       : "bg-slate-100 text-slate-500"
                   }`}
@@ -83,14 +83,14 @@ export default function ModelSelector({
                   <div className="flex items-center justify-between">
                     <span
                       className={`text-sm font-semibold truncate ${
-                        selectedModel === model.id
+                        selectedModel === model.key
                           ? "text-blue-900"
                           : "text-slate-700"
                       }`}
                     >
                       {model.name}
                     </span>
-                    {selectedModel === model.id && (
+                    {selectedModel === model.key && (
                       <Check className="w-4 h-4 text-blue-600 shrink-0 ml-2" />
                     )}
                   </div>
