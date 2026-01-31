@@ -14,7 +14,6 @@ export async function POST(request: Request) {
     const responseData = res.data;
     return NextResponse.json(responseData);
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { error: "Failed to analyze image" },
       { status: 500 }

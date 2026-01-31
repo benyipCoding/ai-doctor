@@ -26,7 +26,11 @@ import {
 import { HomeFeature, features } from "@/constant/home";
 import FeatureModal from "./components/FeatureModal";
 import PreviewArea from "./components/PreviewArea";
-import { AnalyzePayload } from "./api/types";
+import {
+  AnalyzePayload,
+  AnalyzeResponse,
+  AnalyzeResponseData,
+} from "./api/types";
 
 const apiKey = "";
 
@@ -217,7 +221,6 @@ export default function Home() {
       data: base64Data,
       llmKey: selectedModel,
     };
-    console.log(payload);
 
     try {
       const res = await fetch("/api/ai_power", {
@@ -226,7 +229,18 @@ export default function Home() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json().then((res) => res.data);
+      const response: AnalyzeResponse = await res.json();
+      if (response.error) {
+        setError(response.error);
+        return;
+      }
+
+      const data = response.data;
+      if (!data) {
+        setError(response.message || "无法从 AI 获取响应");
+        return;
+      }
+
       console.log("Test API Response:", data);
     } catch (error) {
       console.log(error);
