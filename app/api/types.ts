@@ -61,3 +61,8 @@ export interface AnalyzeResponse {
   message: string;
   error?: string;
 }
+
+export interface LocalAuthPayload {
+  email: string;
+  password: string;
+}

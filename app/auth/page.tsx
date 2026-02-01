@@ -1,30 +1,65 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Activity,
-  User,
-  LogIn,
-  ArrowRight,
-  Mail,
-  Lock,
-  Github,
-  Chrome,
-} from "lucide-react";
+import { Activity, User, LogIn, ArrowRight, Mail, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { IoLogoWechat } from "react-icons/io5";
 import { FaAlipay } from "react-icons/fa";
 
-const AuthPage = () => {
+const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true); // login or register
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   const router = useRouter();
 
   // 模拟提交
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 实际项目中这里接 Auth API
+    // 在提交时确保所有字段都已校验并阻止无效提交
+    setEmailTouched(true);
+    setPasswordTouched(true);
+    // 触发最终校验
+    const emailValid = validateEmail(email);
+    const passwordValid = password.length >= 8;
+    setEmailError(emailValid ? "" : "请输入有效的邮箱地址");
+    setPasswordError(passwordValid ? "" : "密码长度不少于8位");
+    if (!emailValid || !passwordValid) return;
+    // TODO: 实际项目中这里接 Auth API
+  };
+
+  const validateEmail = (value: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    setEmail(v);
+    setEmailTouched(true);
+    if (v === "") {
+      setEmailError("邮箱不能为空");
+    } else if (!validateEmail(v)) {
+      setEmailError("请输入有效的邮箱地址");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    setPassword(v);
+    setPasswordTouched(true);
+    if (v === "") {
+      setPasswordError("密码不能为空");
+    } else if (v.length < 8) {
+      setPasswordError("密码长度不少于8位");
+    } else {
+      setPasswordError("");
+    }
   };
 
   const onBack = () => {
@@ -77,10 +112,13 @@ const AuthPage = () => {
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
                   placeholder="name@example.com"
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
+                  className={`w-full bg-slate-50 border ${emailError && emailTouched ? "border-red-500" : "border-slate-200"} text-slate-800 rounded-xl py-3 pl-11 pr-4 focus:outline-none ${emailError && emailTouched ? "focus:ring-2 focus:ring-red-500/20 focus:border-red-500" : "focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"} transition-all placeholder:text-slate-400`}
                 />
+                {emailError && emailTouched && (
+                  <p className="text-xs text-red-600 mt-1">{emailError}</p>
+                )}
               </div>
             </div>
 
@@ -93,10 +131,13 @@ const AuthPage = () => {
                 <input
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   placeholder="••••••••"
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
+                  className={`w-full bg-slate-50 border ${passwordError && passwordTouched ? "border-red-500" : "border-slate-200"} text-slate-800 rounded-xl py-3 pl-11 pr-4 focus:outline-none ${passwordError && passwordTouched ? "focus:ring-2 focus:ring-red-500/20 focus:border-red-500" : "focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"} transition-all placeholder:text-slate-400`}
                 />
+                {passwordError && passwordTouched && (
+                  <p className="text-xs text-red-600 mt-1">{passwordError}</p>
+                )}
               </div>
             </div>
 
