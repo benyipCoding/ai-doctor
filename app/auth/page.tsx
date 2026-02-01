@@ -11,6 +11,8 @@ import {
   Chrome,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { IoLogoWechat } from "react-icons/io5";
+import { FaAlipay } from "react-icons/fa";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // login or register
@@ -102,7 +104,7 @@ const AuthPage = () => {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="text-xs font-medium text-blue-600 hover:text-blue-700"
+                  className="text-xs font-medium text-blue-600 hover:text-blue-700 cursor-pointer"
                 >
                   忘记密码？
                 </button>
@@ -111,7 +113,7 @@ const AuthPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-slate-200 hover:shadow-xl transition-all active:scale-[0.98] flex items-center justify-center mt-2"
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-slate-200 hover:shadow-xl transition-all active:scale-[0.98] flex items-center justify-center mt-2 cursor-pointer"
             >
               {isLogin ? (
                 <>
@@ -140,11 +142,11 @@ const AuthPage = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button className="flex items-center justify-center py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
-              <Github className="w-5 h-5 text-slate-700" />
+            <button className="flex items-center justify-center py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer">
+              <IoLogoWechat className="w-6 h-6 text-green-500 ml-2" />
             </button>
-            <button className="flex items-center justify-center py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
-              <Chrome className="w-5 h-5 text-blue-500" />
+            <button className="flex items-center justify-center py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer">
+              <FaAlipay className="w-6 h-6 text-blue-500" />
             </button>
           </div>
 
@@ -155,7 +157,7 @@ const AuthPage = () => {
             </span>
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="font-bold text-blue-600 hover:text-blue-700 ml-1"
+              className="font-bold text-blue-600 hover:text-blue-700 ml-1 cursor-pointer"
             >
               {isLogin ? "立即注册" : "直接登录"}
             </button>
@@ -164,9 +166,9 @@ const AuthPage = () => {
       </div>
 
       {/* 底部版权 */}
-      <div className="p-4 text-center text-xs text-slate-400">
+      {/* <div className="p-4 text-center text-xs text-slate-400">
         &copy; 2024 智能验单助手. All rights reserved.
-      </div>
+      </div> */}
     </div>
   );
 };
