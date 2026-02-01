@@ -13,10 +13,13 @@ export async function POST(request: Request) {
     });
     const responseData = res.data;
     return NextResponse.json(responseData);
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to analyze image" },
-      { status: 500 }
-    );
+  } catch (error: any) {
+    let errMsg = "图片解析失败";
+
+    if (error.status === 429) {
+      errMsg = "请求过于频繁，请稍后再试。";
+    }
+
+    return NextResponse.json({ error: errMsg }, { status: error.status });
   }
 }
