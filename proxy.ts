@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 // 中间件：路由守卫（占位实现）
 // 目标：保护 /api/ai_power 接口。如果未鉴权，则重定向到 /auth
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // 仅对指定路径生效
