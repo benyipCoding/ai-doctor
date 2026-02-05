@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import apiClient from "@/utils/request";
-import { LocalAuthPayload } from "../types";
+import { LocalAuthPayload } from "../../types";
 
 // 注册接口
 export async function POST(request: Request) {
   const data: LocalAuthPayload = await request.json();
   try {
-    const res = await apiClient.post("/register", data, {
+    const res = await apiClient.post("/auth/register", data, {
       headers: {
         "Content-Type": request.headers.get("Content-Type"),
       },
