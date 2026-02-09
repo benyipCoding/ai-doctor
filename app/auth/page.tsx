@@ -226,7 +226,7 @@ const AuthPage: React.FC = () => {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="text-xs font-medium text-blue-600 hover:text-blue-700 cursor-pointer"
+                  className="text-sm font-medium text-blue-600 hover:text-blue-700 cursor-pointer"
                 >
                   忘记密码？
                 </button>
