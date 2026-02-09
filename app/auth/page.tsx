@@ -1,6 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { Activity, User, LogIn, ArrowRight, Mail, Lock } from "lucide-react";
+import {
+  Activity,
+  User,
+  LogIn,
+  ArrowRight,
+  Mail,
+  Lock,
+  Shield,
+  RefreshCw,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { IoLogoWechat } from "react-icons/io5";
 import { FaAlipay } from "react-icons/fa";
@@ -13,6 +22,9 @@ const AuthPage: React.FC = () => {
   const [passwordError, setPasswordError] = useState("");
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+  const [captcha, setCaptcha] = useState("");
+  const [captchaError, setCaptchaError] = useState("");
+  const [captchaTouched, setCaptchaTouched] = useState(false);
 
   const router = useRouter();
 
@@ -22,12 +34,17 @@ const AuthPage: React.FC = () => {
     // 在提交时确保所有字段都已校验并阻止无效提交
     setEmailTouched(true);
     setPasswordTouched(true);
+    setCaptchaTouched(true);
     // 触发最终校验
     const emailValid = validateEmail(email);
     const passwordValid = password.length >= 8;
+    const captchaValid = captcha.trim() !== "";
+
     setEmailError(emailValid ? "" : "请输入有效的邮箱地址");
     setPasswordError(passwordValid ? "" : "密码长度不少于8位");
-    if (!emailValid || !passwordValid) return;
+    setCaptchaError(captchaValid ? "" : "验证码不能为空");
+
+    if (!emailValid || !passwordValid || !captchaValid) return;
     // TODO: 实际项目中这里接 Auth API
   };
 
@@ -59,6 +76,17 @@ const AuthPage: React.FC = () => {
       setPasswordError("密码长度不少于8位");
     } else {
       setPasswordError("");
+    }
+  };
+
+  const handleCaptchaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    setCaptcha(v);
+    setCaptchaTouched(true);
+    if (v.trim() === "") {
+      setCaptchaError("验证码不能为空");
+    } else {
+      setCaptchaError("");
     }
   };
 
@@ -102,7 +130,7 @@ const AuthPage: React.FC = () => {
           </div>
 
           {/* 表单区 */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-slate-500 ml-1">
                 电子邮箱
@@ -117,7 +145,9 @@ const AuthPage: React.FC = () => {
                   className={`w-full bg-slate-50 border ${emailError && emailTouched ? "border-red-500" : "border-slate-200"} text-slate-800 rounded-xl py-3 pl-11 pr-4 focus:outline-none ${emailError && emailTouched ? "focus:ring-2 focus:ring-red-500/20 focus:border-red-500" : "focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"} transition-all placeholder:text-slate-400`}
                 />
                 {emailError && emailTouched && (
-                  <p className="text-xs text-red-600 mt-1">{emailError}</p>
+                  <p className="text-xs text-red-600 absolute left-1 top-full mt-1">
+                    {emailError}
+                  </p>
                 )}
               </div>
             </div>
@@ -136,8 +166,59 @@ const AuthPage: React.FC = () => {
                   className={`w-full bg-slate-50 border ${passwordError && passwordTouched ? "border-red-500" : "border-slate-200"} text-slate-800 rounded-xl py-3 pl-11 pr-4 focus:outline-none ${passwordError && passwordTouched ? "focus:ring-2 focus:ring-red-500/20 focus:border-red-500" : "focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"} transition-all placeholder:text-slate-400`}
                 />
                 {passwordError && passwordTouched && (
-                  <p className="text-xs text-red-600 mt-1">{passwordError}</p>
+                  <p className="text-xs text-red-600 absolute left-1 top-full mt-1">
+                    {passwordError}
+                  </p>
                 )}
+              </div>
+            </div>
+
+            {/* 新增验证码输入项 */}
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-slate-500 ml-1">
+                验证码
+              </label>
+              <div className="flex gap-3">
+                <div className="relative flex-1">
+                  <Shield className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
+                  <input
+                    type="text"
+                    maxLength={4}
+                    value={captcha}
+                    onChange={handleCaptchaChange}
+                    placeholder="输入验证码"
+                    className={`w-full bg-slate-50 border ${captchaError && captchaTouched ? "border-red-500" : "border-slate-200"} text-slate-800 rounded-xl py-3 pl-11 pr-4 focus:outline-none ${captchaError && captchaTouched ? "focus:ring-2 focus:ring-red-500/20 focus:border-red-500" : "focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"} transition-all placeholder:text-slate-400`}
+                  />
+                  {captchaError && captchaTouched && (
+                    <p className="text-xs text-red-600 absolute left-1 top-full mt-1">
+                      {captchaError}
+                    </p>
+                  )}
+                </div>
+
+                {/* 验证码图片 + 刷新按钮 */}
+                <div className="flex gap-2">
+                  <div className="w-24 bg-linear-to-br from-blue-50 to-indigo-50 rounded-xl border border-slate-200 flex items-center justify-center cursor-pointer relative overflow-hidden select-none">
+                    <div
+                      className="absolute inset-0 opacity-20"
+                      style={{
+                        backgroundImage:
+                          "radial-gradient(circle, #94a3b8 1px, transparent 1px)",
+                        backgroundSize: "8px 8px",
+                      }}
+                    ></div>
+                    <span className="text-2xl font-bold italic tracking-widest text-slate-600 font-mono transform -rotate-3">
+                      8K4W
+                    </span>
+                  </div>
+                  {/* <button
+                    type="button"
+                    className="w-12 flex items-center justify-center rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50 text-slate-400 hover:text-blue-600 transition-all shadow-sm active:scale-95 bg-white"
+                    title="刷新验证码"
+                  >
+                    <RefreshCw className="w-5 h-5" />
+                  </button> */}
+                </div>
               </div>
             </div>
 
